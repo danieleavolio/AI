@@ -1,0 +1,36 @@
+
+% Si e al ristorante e si desidera ordinare un pasto. Scrivere un programma 
+% logico disgiuntivo che ci fornisca dei pasti alternativi. Si puo scegliere 
+% tra primi, secondi e bevande. Alcune combinazioni sono da evitare. 
+% Un pasto ammissibile contiene esattamente un primo, un secondo ed una 
+% bevanda, e non contiene alcuna combinazione da evitare.
+% In input sono forniti i seguenti predicati:
+
+primo(pasta). 
+primo(pastaAlSugo). 
+primo(pastaInBianco). 
+primo(penneAlSalmone).
+
+
+secondo (carneDiManzo).
+secondo (carneVitello).
+secondo (cozzeRosse).
+secondo (cozzeVerdi).
+
+bevanda(vinoRosso).
+bevanda(vinoBianco).
+bevanda(brendy).
+bevanda(glengrand).
+
+
+conflitto(penneAlSalmone,cozzeRosse).
+conflitto(penneAlSalmone,cozzeVerdi).
+
+conflitto(A,B) :- conflitto(B,A).
+
+inMenu(P,S,B) | outMenu(P,S,B):- primo(P), secondo(S), bevanda(B).
+:- inMenu(A,B,C), conflitto(A,B).
+:- inMenu(A,B,C), conflitto(B,C).
+:- inMenu(A,B,C), conflitto(A,C).
+
+menuAccettabili(P,S,B):- inMenu(P,S,B).

@@ -1,0 +1,56 @@
+% ==============================================================================
+% Esercizio 1.
+% 
+% SceltaMenu
+%
+% Si e' al ristorante e si desidera ordinare un pasto. Scrivere un programma '
+% logico disgiuntivo che ci fornisca dei pasti alternativi. Si puo' scegliere '
+% tra primi, secondi e bevande. Alcune combinazioni sono da evitare. 
+% Un pasto ammissibile contiene esattamente un primo, un secondo ed una 
+% bevanda, e non contiene alcuna combinazione da evitare.
+% In input sono forniti i seguenti predicati:
+%
+%	primo(P) 
+%	secondo (S)
+%	bevanda(B)
+%	conflitto(X,Y)
+%
+% I primi tre rappresentano le vivande, il quarto, binario, rappresenta 
+% le combinazioni da evitare (ex.: conflitto(pesce, vino_rosso) significa 
+% che nello stesso pasto non possono essere presenti contemporaneamente 
+% pesce e vino rosso.
+%
+% Il programma deve essere codificato secondo il paradigma Guess&Check, e per 
+% il suo sviluppo si deve seguire il processo incrementale discusso a lezione 
+% (formalizzazione dei dati, definizione della parte GUESS, test della parte 
+% GUESS con istanze di prova, definizione (e anche qui test con istanze di 
+% prova) delle parti CHECK ciascuna separatamente, verifica del programma 
+% completo, ancora con istanze adeguate).
+
+% ==============================================================================
+% Esercizio 2. 
+% Quattro amici, nonostante generalmente vadano molto d’accordo, hanno gusti 
+% completamente diversi riguardo i programmi televisivi preferiti. Infatti, 
+% ognuno di loro ha come suo programma preferito un programma diverso da 
+% quello degli altri tre amici. Inoltre tali programmi vengono tutti 
+% trasmessi in giorni ed orari tra loro differenti.  Scrivere un programma 
+% DLV che, utilizzando gli indizi seguenti, individui per ogni amico: il titolo 
+% del suo programma preferito, il giorno della settimana e l’orario in cui 
+% viene trasmesso.
+
+% Indizi:
+
+% 1.	La serie “CSI” non viene trasmessa di domenica.
+% 2.	Il programma “Ulisse”, trasmesso alle 7 di sera, non è quello preferito da Michele.
+% 3.	“Stranamore” non è il programma preferito di Alberto.
+% 4.	Il programma preferito di Roberto viene trasmesso alle 10 di sera ma non di mercoledì.
+% 5.	Il programma trasmesso martedì sera è “XFactor”.
+% 6.	Michele non guarda mai la televisione alle 9 di sera, mentre Giorgio non la guarda mai di domenica.
+% 7.	“Stranamore” viene trasmesso un’ora dopo rispetto all’orario di inizio del programma preferito di Giorgio, 
+%       ma un’ora prima rispetto al programma trasmesso di lunedì.
+
+% Amici:     		Alberto, Giorgio, Michele, Roberto
+% Programmi : 	CSI, Stranamore, Ulisse, XFactor
+% Giorni:     		domenica, lunedì, martedì, mercoledì
+% Orari inizio:    	7, 8, 9, 10 (PM).
+

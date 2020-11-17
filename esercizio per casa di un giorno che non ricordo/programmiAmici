@@ -1,0 +1,82 @@
+% Esercizio 2. 
+% Quattro amici, nonostante generalmente vadano molto d’accordo, hanno gusti 
+% completamente diversi riguardo i programmi televisivi preferiti. Infatti, 
+% ognuno di loro ha come suo programma preferito un programma diverso da 
+% quello degli altri tre amici. Inoltre tali programmi vengono tutti 
+% trasmessi in giorni ed orari tra loro differenti.  Scrivere un programma 
+% DLV che, utilizzando gli indizi seguenti, individui per ogni amico: il titolo 
+% del suo programma preferito, il giorno della settimana e l’orario in cui 
+% viene trasmesso.
+
+% Indizi:
+
+
+
+% Amici:     		Alberto, Giorgio, Michele, Roberto
+% Programmi : 	CSI, Stranamore, Ulisse, XFactor
+% Giorni:     		domenica, lunedì, martedì, mercoledì
+% Orari inizio:    	7, 8, 9, 10 (PM).
+
+
+amico(alberto). 
+amico(giorgio). 
+amico(michele). 
+amico(roberto). 
+
+programma(csi). 
+programma(stranamore). 
+programma(ulisse). 
+programma(xfactor).
+
+giorno(domenica).
+giorno(lunedi).
+giorno(martedi).
+giorno(mercoedi).
+
+orarioInizio(7..10).
+
+
+
+amaProgramma(A,csi)|amaProgramma(A,stranamore)|amaProgramma(A,ulisse)|amaProgramma(A,xfactor) :- amico(A).
+programmaOrario(P,7) | programmaOrario(P,8) | programmaOrario(P,9) | programmaOrario(P,10):- programma(P).
+programmaGiorno(P,domenica) |programmaGiorno(P,lunedi) |programmaGiorno(P,martedi) |programmaGiorno(P,mercoledi):- programma(P).
+
+:-amaProgramma(A,P), amaProgramma(B,P), A!=B.
+:-programmaOrario(P,O), programmaOrario(P2,O), P!=P2.
+:-programmaGiorno(P,G), programmaGiorno(P2,G), P!=P2.
+
+%applicazione delle regole date dal programma
+
+% 1.	La serie “CSI” non viene trasmessa di domenica.
+:-progammaGiorno(csi,domenica).
+
+% 2.	Il programma “Ulisse”, trasmesso alle 7 di sera, non è quello preferito da Michele.
+programmaOrario(ulisse,7).
+:-amaProgramma(michele,ulisse).
+
+% 3.	“Stranamore” non è il programma preferito di Alberto.
+:-amaProgramma(alberto,stranamore).
+
+% 4.	Il programma preferito di Roberto viene trasmesso alle 10 di sera ma non di mercoledì.
+:-amaProgramma(roberto,P), programmaOrario(P,O), O!=10.
+:-amaProgramma(roberto, P), programmaGiorno(P,mercoledi).
+
+% 5.	Il programma trasmesso martedì sera è “XFactor”.
+programmaGiorno(xfactor,martedi).
+
+% 6.	Michele non guarda mai la televisione alle 9 di sera, mentre Giorgio non la guarda mai di domenica.
+:-amaProgramma(michele,P), programmaOrario(P,9).
+:-amaProgramma(giorgio,P), programmaGiorno(P,domenica).
+
+% 7.	“Stranamore” viene trasmesso un’ora dopo rispetto all’orario di inizio del programma preferito di Giorgio,
+%       ma un’ora prima rispetto al programma trasmesso di lunedì.
+:-programmaOrario(stranamore, O), amaProgramma(giorgio,P), programmaOrario(P,O2), O!=O2+1.
+:-programmaOrario(stranamore,O), programmaGiorno(P,lunedi), programmaOrario(P,O2), O!=O2-1.
+
+soluzione(A,P,G,O) :- amaProgramma(A,P), programmaGiorno(P,G), programmaOrario(P,O).
+
+%SOLUZOINE:
+%soluzione(roberto,xfactor,martedi,10). 
+%soluzione(alberto,csi,lunedi,9).
+%soluzione(michele,stranamore,domenica,8).
+%soluzione(giorgio,ulisse,mercoledi,7). 
