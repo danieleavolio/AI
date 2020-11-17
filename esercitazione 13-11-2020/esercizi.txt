@@ -1,0 +1,102 @@
+color(red).
+color(green).
+color(ivory).
+color(blue).
+color(yellow).
+
+nationality(japanese).
+nationality(englishman).
+nationality(norwegian).
+nationality(russian).
+nationality(spaniard).
+
+pet(horse).
+pet(snail).
+pet(zebra).
+pet(fox).
+pet(dog).
+
+drink(water).
+drink(coffe).
+drink(tea).
+drink(milk).
+drink(orange).
+
+cigarettes(luckystrike).
+cigarettes(winston).
+cigarettes(chesterfield).
+cigarettes(kools).
+cigarettes(parliments).
+
+num(1).
+num(2).
+num(3).
+num(4).
+num(5).
+
+
+
+gruppoIn(N,CIG,COU,COL,P,D) | gruppoOut(N,CIG,COU,COL,P,D):- haNumero(COU,N), haAnimale(COU,P), beve(COU,D), fuma(COU,CIG), vive(COU,COL).
+
+
+vive(NAT, COL) | nonVive (NAT, COL) :- nationality(NAT), color(COL).
+haAnimale(NAT,P) | nonHaAnimale(NAT,P):- nationality(NAT), pet(P).
+beve(NAT, D) |nonBeve(NAT,D):- nationality(NAT), drink(D).
+fuma(NAT,C) | nonFuma(NAT,C):-nationality(NAT), cigarettes(C).
+haNumero(NAT,N) | nonHaNumero(NAT,N) :-nationality(NAT), num(N).
+
+
+vive(NAT,red) | vive(NAT,green) | vive(NAT,ivory) | vive(NAT,blue) | vive(NAT,yellow):- nationality(NAT).
+haAnimale(NAT,horse) | haAnimale(NAT,snail) | haAnimale(NAT,zebra) | haAnimale(NAT,fox) | haAnimale(NAT,dog):- nationality(NAT).
+beve(NAT, water) |beve(NAT, coffe) |beve(NAT, tea) |beve(NAT, milk) |beve(NAT, orange):- nationality(NAT).
+fuma(NAT,luckystrike) |fuma(NAT,winston) |fuma(NAT,chesterfield) |fuma(NAT,kools) |fuma(NAT,parliments):- nationality(NAT).
+haNumero(NAT,1) | haNumero(NAT,2) | haNumero(NAT,3) | haNumero(NAT,4) | haNumero(NAT,5):- nationality(NAT).
+
+
+%COSTRAINT
+:-vive(NAT1, COL), vive(NAT2,COL), NAT1!=NAT2.
+:-haAnimale(NAT1,P), haAnimale(NAT2,P), NAT1!=NAT2.
+:-beve(NAT1, D), beve(NAT2, D), NAT1!=NAT2.
+:-fuma(NAT1,C), fuma(NAT2,C), NAT1!=NAT2.
+:-haNumero(NAT1,N), haNumero(NAT2,N), NAT1!=NAT2.
+
+vicine(N1,N2):-num(N1), num(N2), N2 = N1 + 1.
+vicine(N1,N2):-num(N1), num(N2),N1 = N2 + 1.
+
+
+%1. The Englishman lives in the RED house
+vive(englishman,red).
+%2. The Spaniard owns the dog.
+haAnimale(spaniard,dog).
+%3. The Norwegian lives in the first house on the left.
+haNumero(norwegian,1).
+%4. Kools are smoked in the YELLOW house.
+:-fuma(NAT,kools), vive(NAT,Color), Color!=yellow.
+%5. The man who smokes Chesterfields lives in the house next to the man with the fox.
+:-fuma(NAT,chesterfields), haNumero(NAT,Num1), haAnimale(NAT2,fox), haNumero(NAT2,Num2),not vicine(Num1, Num2).
+
+%6. The Norwegian lives next to the BLUE house.
+:- haNumero(norwegian,Num1), haNumero(NAT,Num2), vive(NAT, blue), not vicine(Num1, Num2).
+
+%7. The Winston smoker owns snails.
+:-fuma(NAT,winston), haAnimale(NAT,Animal), Animal!=snail.
+%8. The LuckyStrike smoker drinks orange.
+:-fuma(NAT,luckystrike), beve(NAT, Bibita), Bibita!=orange.
+%9. The Russian drinks tea.
+beve(russian,tea).
+%10. The Japanese smokes Parliaments.
+fuma(japanese,parliments).
+%11. Kools are smoked in the house next to the house where the horse is kept.
+:-fuma(NAT, kools), haNumero(NAT, Numero1), haAnimale(NAT2, horse), haNumero(NAT2, Numero2), not vicine(Numero1, Numero2).
+
+%12. Coffee is drunk in the GREEN house.
+:-beve(NAT,coffe), vive(NAT,Color), Color!=green.
+
+%13. The GREEN house is immediately to the right of the IVORY house.
+:- vive(NAT,green), haNumero(NAT,Numero1), vive(NAT2, ivory), haNumero(NAT2, Numero2), Numero1!=Numero2+1.
+
+%14. Milk is drunk in the middle house.
+:-beve(NAT,milk), haNumero(NAT,Numero), Numero!=3.
+
+%15 soluzione finale
+gruppoIn(N,CIG,COU,COL,P,D):- haNumero(COU,N), haAnimale(COU,P), beve(COU,D), fuma(COU,CIG), vive(COU,COL).
