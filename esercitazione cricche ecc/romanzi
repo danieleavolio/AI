@@ -1,0 +1,88 @@
+% == == == == == == == == == == == == == == == == == == == == == == == == == == == 
+% ROMANZI E ASSASSINI
+% 5 scrittori hanno pubblicato i loro nuovi romanzi gialli. Un appassionato li ha 
+% letti, e vuole rovinarvi la sorpresa facendovi indovinare i finali di ciascuno. 
+% I 5 assassini (1 per romanzo) sono: maggiordomo, artista, dentista, idraulico, 
+% avvocato. I 5 luoghi (1 per romanzo) sono: Roma, Milano, Falerna, Napoli, 
+% Lamezia Terme. Le 5 vittime (1 per romanzo) sono: cugino, amico, madre, partner, 
+% sorella. I 5 moventi (1 per romanzo) sono: ricatto, eredità, amore, potere, 
+% vendetta. Dovete quindi ricostruire i finali (cioè quale assassino ha ucciso 
+% quale vittima, dove lo ha fatto e quale era il movente). Gli indizi che vi 
+% fornisce sono i seguenti:
+
+assassino(maggiordomo).
+assassino(artista).
+assassino(dentista).
+assassino(idraulico).
+assassino(avvocato).
+
+luogo(roma).
+luogo(milano).
+luogo(falerna).
+luogo(napoli).
+luogo(lameziaterme).
+
+vittima(cugino).
+vittima(amico).
+vittima(madre).
+vittima(partner).
+vittima(sorella).
+
+movente(ricatto).
+movente(eredita).
+movente(amore).
+movente(potere).
+movente(vendetta).
+
+
+dove(A, roma) | dove(A, napoli) | dove(A, falerna) | dove(A,lameziaterme) | dove(A, milano):- assassino(A).
+chi(A,cugino) | chi(A,amico) | chi(A,madre) | chi(A,partner) | chi(A,sorella):- assassino(A).
+perche(A,ricatto) |perche(A,eredita) |perche(A,amore) |perche(A,potere) |perche(A,vendetta):- assassino(A).
+
+:-dove(A,L), dove(A2,L), A!=A2.
+:-chi(A,P), dove(A2,P), A!=A2.
+:-perche(A,M), perche(A2,M), A!=A2.
+
+
+
+
+% 1. Né il maggiordomo, né l’idraulico hanno ucciso a Roma. 
+:-dove(maggiordomo,roma).
+:-dove(idraulico,roma).
+
+% 2. L’omicidio avvenuto a Roma aveva come movente l’eredità. 
+:-dove(A,roma), perche(A,eredita).
+
+% 3. L’omicidio avvenuto per vendetta non è stato perpetrato né a Falerna né a 
+% Milano.
+:-perche(A,vendetta), dove(A,falerna).
+:-perche(A,vendetta), dove(A,milano).
+
+%L’artista non ha ucciso il partner (il quale a sua volta non è stato 
+% ucciso né per vendetta né per potere). 
+:-chi(artista,partner).
+:-chi(A,partner), perche(A,vendetta).
+:-chi(A,partner), perche(A,amore).
+
+
+% 4. Il dentista ha ucciso un cugino a Lamezia Terme, ma non per vendetta, né per 
+% amore. 
+chi(dentista,cugino).
+dove(dentista,lameziaterme).
+:-perche(dentista,vendetta).
+:-perche(dentista,amore).
+
+% 5. La sorella non è stata uccisa a Roma, né a Falerna; e la vittima di Falerna 
+% non è stata uccisa per amore. Il maggiordomo non ha ucciso la partner. 
+:-chi(maggiordomo, partner).
+:-chi(A, sorella), dove(A, falerna).
+:-chi(A, sorella), dove(A, roma).
+:-dove(A,falerna), perche(A,amore).
+
+% 6. Nel romanzo in cui l’assassino è l’avvocato il  movente è il potere, ma la 
+% vittima non è un amico.
+
+perche(avvocato,potere).
+:-chi(avvocato,amico).
+
+soluzione(A,P,L,M):- chi(A,P), dove(A,L), perche(A,M).	
