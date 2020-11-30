@@ -1,0 +1,94 @@
+% == == == == == == == == == == == == == == == == == == == == == == == == == == == 
+% CRICCHE DI DIMENSIONE K
+% Scrivere un programma logico disgiuntivo che calcoli tutte 
+% le cricche di dimensione data (tramite un fatto "clique(k)" 
+% -- esempio: "clique(3) di un dato grafo, rappresentato"
+% tramite la relazione binaria arc(Nodo1, Nodo2).
+
+
+
+% == == == == == == == == == == == == == == == == == == == == == == == == == == == 
+% ALBERI DI NATALE E FESTONI
+% In un centro commerciale ci sono una serie di alberi 
+% di Natale che devono essere addobbati, avendo a disposizione 
+% un certo numero di festoni di vari colori. Scrivere un 
+% programma DLV che distribuisca i festoni per i vari alberi, 
+% sapendo che:
+% - ciascun festone puo' stare su un solo albero;'
+% - per evitare alberi spogli, ciascun albero deve avere 
+% almeno 2 festoni;
+
+% Modello dei dati in input: 
+% albero(A).  <-  Gli alberi da addobbare
+% adiacenti(A1,A2) <- Indica che gli alberi A1 e A2 sono adiacenti.
+% festone(F1,C). <- I festoni a disposizione 
+%                   (F1=identificatore,C=colore)
+
+
+% == == == == == == == == == == == == == == == == == == == == == == == == == == == 
+% BATTAGLIA NAVALE - semplificato 
+% Abbiamo cinque navi, ciascuna identificata con un numero.
+ship(1). ship(2). ship(3). ship(4). ship(5).
+
+% Queste navi sono su un campo di battaglia che puo' essere visto '
+% come una matrice con righe e colonne. Ciascuna nave e' "composta" da'
+% tre "pezzi", e pertanto occupa 3 posizioni sul campo di battaglia; si 
+% sa che sono navi "lunghe", quindi non possono essere ad "L", ma solo
+% in orrizzontale o in verticale. Si devono individuare le posizioni 
+% di tutte le navi, sapendo che in input si hanno fatti del tipo
+% 
+%   rowsum(R,Su)
+% 
+% e
+% 
+%   colsum(R,Su)
+% 
+% che indicano quante celle occupate ci sono sul campo di battaglia per 
+% ciascuna riga e colonna, rispettivamente (una sorta di tomografia
+% bidimensionale).
+
+% == == == == == == == == == == == == == == == == == == == == == == == == == == == 
+% ROMANZI E ASSASSINI
+% 5 scrittori hanno pubblicato i loro nuovi romanzi gialli. Un appassionato li ha 
+% letti, e vuole rovinarvi la sorpresa facendovi indovinare i finali di ciascuno. 
+% I 5 assassini (1 per romanzo) sono: maggiordomo, artista, dentista, idraulico, 
+% avvocato. I 5 luoghi (1 per romanzo) sono: Roma, Milano, Falerna, Napoli, 
+% Lamezia Terme. Le 5 vittime (1 per romanzo) sono: cugino, amico, madre, partner, 
+% sorella. I 5 moventi (1 per romanzo) sono: ricatto, eredità, amore, potere, 
+% vendetta. Dovete quindi ricostruire i finali (cioè quale assassino ha ucciso 
+% quale vittima, dove lo ha fatto e quale era il movente). Gli indizi che vi 
+% fornisce sono i seguenti:
+
+% 1. Né il maggiordomo, né l’idraulico hanno ucciso a Roma. 
+% 
+% 2. L’omicidio avvenuto a Roma aveva come movente l’eredità. 
+% 
+% 3. L’omicidio avvenuto per vendetta non è stato perpetrato né a Falerna né a 
+% Milano. L’artista non ha ucciso il partner (il quale a sua volta non è stato 
+% ucciso né per vendetta né per potere). 
+% 
+% 4. Il dentista ha ucciso un cugino a Lamezia Terme, ma non per vendetta, né per 
+% amore. 
+% 
+% 5. La sorella non è stata uccisa a Roma, né a Falerna; e la vittima di Falerna 
+% non è stata uccisa per amore. Il maggiordomo non ha ucciso la partner. 
+% 
+% 6. Nel romanzo in cui l’assassino è l’avvocato il  movente è il potere, ma la 
+% vittima non è un amico.
+
+
+% == == == == == == == == == == == == == == == == == == == == == == == == == == == 
+% Si consideri il seguente programma logico e se ne calcolino gli 
+% answer set, illustrando adeguatamente il procedimento seguito.
+
+goal(X,Y) | noGoal(X,Y) :- not fuorigioco(Y), tiro(X,Y), not parata(Z,Y), portiere(Z).
+
+goal(X,Y) :- tiro(X,Y), not parata(Z,Y), not fuori(X,Y), portiere(Z).
+parata(Z,Y) :- tiro(X,Y), not goal(X,Y), portiere(Z).
+
+:- #count{ X : goal(X,Y) } > 1.
+
+tiro(1,2).
+tiro(4,6).
+portiere(a).
+fuorigioco(6).

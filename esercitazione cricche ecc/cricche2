@@ -1,0 +1,20 @@
+% == == == == == == == == == == == == == == == == == == == == == == == == == == == 
+% CRICCHE DI DIMENSIONE K
+% Scrivere un programma logico disgiuntivo che calcoli tutte 
+% le cricche di dimensione data (tramite un fatto "clique(k)" 
+% -- esempio: "clique(3) di un dato grafo, rappresentato"
+% tramite la relazione binaria arc(Nodo1, Nodo2).
+
+
+
+nodo(1..8).
+
+clique(3).
+
+arc(X,Y):- arc(Y,X).
+arc(X,Y):- nodo(X), nodo(Y).
+
+
+inClique(X) | outClique(X) :- nodo(X).
+:- inClique(X), nodo(Y),not arc(X,Y).
+:- #count{X: inClique(X)}!=3.

@@ -1,0 +1,78 @@
+% Ci sono 10 studenti: 1, 2, ... 10. Devono essere assegnati a 4 stanze
+% di un dormitorio: a, b, c, d. Ciascuna stanza puo ospitare al massimo
+% 3 studenti, e nessuno studente puo essere assegnato a piu di una
+% stanza.
+
+% Oltre ai predicati room e student, che rappresentano
+% rispettivamente le 4 stanze del dormitorio e i 10 studenti, sono
+% forniti anche i predicati adjacent e friend; adjacent definisce
+% coppie di stanze adiacenti, mentre la relazione simmetrica friend
+% definisce coppie di amici. Le stanze adiacenti sono le seguenti:
+% Gli assegnamenti devono rispettare i seguenti vincoli:
+
+% 1. Gli studenti 3 e 4 devono stare in stanze differenti.
+% 2. Gli studenti 5 e 6 devono stare nella stessa stanza.
+% 3. Ciascuna stanza deve ospitare almeno 2 studenti.
+% 4. La stanza c deve ospitare esattamente 2 studenti.
+% 5. Lo studente 9 deve stare in stanza con tutti i suoi amici.
+% 6. Preferibilmente gli amici dovrebbero stare nella stessa stanza;
+% se non e possibile, e preferibile metterli in stanze adiacenti.
+
+studente(1..10).
+stanza(a).
+stanza(b).
+stanza(c).
+stanza(d).
+
+adjacent(X,Y):- adjacent(Y,X).
+adjacent(ST1,ST2):- stanza(ST1), stanza(ST2), ST1=a, ST2=b.
+adjacent(ST1,ST2):- stanza(ST1), stanza(ST2), ST1=b, ST2=c.
+adjacent(ST1,ST2):- stanza(ST1), stanza(ST2), ST1=c, ST2=d.
+
+
+amici(1,2).
+amici(2,3).
+amici(4,5).
+amici(6,7).
+amici(8,9).
+amici(9,10).
+amici(2,5).
+amici(1,10).
+
+
+amici(X,Y) :- amici(Y,X).
+%GUESS
+haStanza(S,ST) | nonhaStanza(S,ST) :- studente(S), stanza(ST).
+
+%CHECK
+haStanza(S,a) |haStanza(S,b) |haStanza(S,c) |haStanza(S,d):- studente(S).
+%IMPOSSIBILE ASSEGNARE 2 STANZEA AD 1 STUDENTE
+:- haStanza(S,ST), haStanza(S,ST2), ST!=ST2.
+
+%la stanza deve avere numero di studenti maggiore di 3
+:- stanza(ST), #count{S : haStanza(S,ST)}>3.
+
+% 1. Gli studenti 3 e 4 devono stare in stanze differenti.
+:- haStanza(3,ST), haStanza(4,ST).
+% 2. Gli studenti 5 e 6 devono stare nella stessa stanza.
+:- haStanza(5,ST), haStanza(6,ST1), ST!=ST1.
+% 3. Ciascuna stanza deve ospitare almeno 2 studenti.
+:- stanza(ST), #count{S : haStanza(S,ST)}<2.
+% 4. La stanza c deve ospitare esattamente 2 studenti.
+:- #count{S: haStanza(S,c)}!=2.
+% 5. Lo studente 9 deve stare in stanza con tutti i suoi amici.
+:- amici(S,9), haStanza(9,ST), haStanza(S,ST2), ST!=ST2.  
+% 6. Preferibilmente gli amici dovrebbero stare nella stessa stanza;
+% se non e possibile, e preferibile metterli in stanze adiacenti.
+
+stessaStanza(X,Y):- haStanza(X,ST), haStanza(Y,ST), X!=Y.
+stanzeAdiacenti(X,Y):- haStanza(X,ST1), haStanza(Y,ST2), X!=Y, adjacent(ST1,ST2).
+
+
+%SE NON SONO NELLA STESSA STANZA PAGA DI PIU.
+:~amici(X,Y), not stessaStanza(X,Y), X<Y. [1@2,X,Y] %SE NON SI ATTIVA NON PAGO
+
+%non vorrei che una coppia di amici non sia nella stessa stanza e in stanze adiacenti
+%il vincolo fa pagare SOLAMENTE quando le stanze non sono adiacenti
+:~amici(X,Y), not stessaStanza(X,Y), not stanzeAdiacenti(X,Y), X<Y. [1@1,X,Y]
+

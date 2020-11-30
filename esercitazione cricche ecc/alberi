@@ -1,0 +1,47 @@
+% == == == == == == == == == == == == == == == == == == == == == == == == == == == 
+% ALBERI DI NATALE E FESTONI
+% In un centro commerciale ci sono una serie di alberi 
+% di Natale che devono essere addobbati, avendo a disposizione 
+% un certo numero di festoni di vari colori. Scrivere un 
+% programma DLV che distribuisca i festoni per i vari alberi, 
+% sapendo che:
+% - ciascun festone puo stare su un solo albero;
+% - per evitare alberi spogli, ciascun albero deve avere 
+% almeno 2 festoni;
+
+% Modello dei dati in input: 
+% albero(A).  <-  Gli alberi da addobbare
+% adiacenti(A1,A2) <- Indica che gli alberi A1 e A2 sono adiacenti.
+% festone(F1,C). <- I festoni a disposizione 
+%                   (F1=identificatore,C=colore)
+
+albero(alberoRosso).
+albero(alberoViola).
+albero(alberoTriste).
+albero(alberoGrosso).
+
+
+alberoNumero(A,1) | alberoNumero(A,2) |alberoNumero(A,3) | alberoNumero(A,4):- albero(A).
+:-#count{Num: alberoNumero(A,Num)}!=4.
+
+festone(palla, rossa).
+festone(palla, verde).
+festone(palla, viola).
+festone(palla, fucsia).
+festone(stella,gialla).
+festone(stella,porpora).
+festone(stella,azzurra).
+festone(stella,nera).
+
+
+associazioneFestone (F, C, A) | nonAssociazioneFestone (F, C, A) :- festone(F,C), albero(A).
+
+%costraint
+:-#count{F: associazioneFestone(F,C,A)}!=2, albero(A).
+:-associazioneFestone(F,C,A1), associazioneFestone(F,C,A2), A1!=A2.
+
+
+adiacenti(A1,A2):- alberoNumero(A1,Num1), alberoNumero(A2,Num2), Num1= Num2+1.
+adiacenti(A1,A2):- alberoNumero(A1,Num1), alberoNumero(A2,Num2), Num2= Num1+1.
+
+

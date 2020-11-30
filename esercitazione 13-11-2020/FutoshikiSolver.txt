@@ -3,17 +3,17 @@ riga(1..5).
 colonna(1..5).
 valore(1..5).
 
-greater(1, 4, 1, 5).
-greater(1, 3, 2, 3).
-greater(2, 4, 2, 3).
-greater(3, 2, 2, 2).
-greater(2, 3, 3, 3).
-greater(3, 4, 2, 4).
-greater(4, 1, 4, 2).
-greater(4, 5, 4, 4).
-greater(5, 2, 5, 3).
-greater(4, 4, 5, 4).
-greater(5, 3, 4, 3).
+maggiore(1, 4, 1, 5).
+maggiore(1, 3, 2, 3).
+maggiore(2, 4, 2, 3).
+maggiore(3, 2, 2, 2).
+maggiore(2, 3, 3, 3).
+maggiore(3, 4, 2, 4).
+maggiore(4, 1, 4, 2).
+maggiore(4, 5, 4, 4).
+maggiore(5, 2, 5, 3).
+maggiore(4, 4, 5, 4).
+maggiore(5, 3, 4, 3).
 InrigColVal(2,5,2).
 
 %genera celle
@@ -28,10 +28,53 @@ InrigColVal(X,Y,N) | OutRigColVal(X,Y,N):- cella(X,Y), valore(N).
 %STESSO numero su stessa RIGA
 :-InrigColVal(X,Y,N), InrigColVal(X2,Y,N), X!=X2.
 %condizioni dei maggiori
-:-greater(X1,Y1,X2,Y2), InrigColVal(X1,Y1,N), InrigColVal(X2,Y2,N2), N<=N2.
+:-maggiore(X1,Y1,X2,Y2), InrigColVal(X1,Y1,N), InrigColVal(X2,Y2,N2), N<=N2.
 
-tutteCelle(X,Y):-InrigColVal(X,Y,V).
-:-not tutteCelle(X,Y), cella(X,Y).
+%devo assocciare a forza un valore ad una cella
+piena(X,Y):- InrigColVal(X,Y,_).
+:-cella(X,Y), not piena(X,Y).
+
+
+valoriFinali(X,Y,V):- InrigColVal(X,Y,V).
+
+
+
+
+riga(1..5).
+colonna(1..5).
+valore(1..5).
+
+maggiore(1, 4, 1, 5).
+maggiore(1, 3, 2, 3).
+maggiore(2, 4, 2, 3).
+maggiore(3, 2, 2, 2).
+maggiore(2, 3, 3, 3).
+maggiore(3, 4, 2, 4).
+maggiore(4, 1, 4, 2).
+maggiore(4, 5, 4, 4).
+maggiore(5, 2, 5, 3).
+maggiore(4, 4, 5, 4).
+maggiore(5, 3, 4, 3).
+InrigColVal(2,5,2).
+
+%genera celle
+cella(X,Y):-riga(X), colonna(Y).
+
+InrigColVal(X,Y,N) | OutRigColVal(X,Y,N):- cella(X,Y), valore(N).
+
+%stessa cella con valore diverso
+:-InrigColVal(X,Y,N), InrigColVal(X,Y,N2), N!=N2.
+%STESSO numero su stessa riga impossibile
+:-InrigColVal(X,Y,N), InrigColVal(X,Y2,N), Y!=Y2.
+%STESSO numero su stessa colonne  impossibile
+:-InrigColVal(X,Y,N), InrigColVal(X2,Y,N), X!=X2.
+%condizioni dei maggiori
+:-maggiore(X1,Y1,X2,Y2), InrigColVal(X1,Y1,N), InrigColVal(X2,Y2,N2), N<=N2.
+
+%devo assocciare a forza un valore ad una cella
+piena(X,Y):- InrigColVal(X,Y,_).
+:-cella(X,Y), not piena(X,Y).
+
 
 valoriFinali(X,Y,V):- InrigColVal(X,Y,V).
 

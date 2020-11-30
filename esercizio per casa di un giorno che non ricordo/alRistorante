@@ -29,6 +29,7 @@ conflitto(penneAlSalmone,cozzeVerdi).
 conflitto(A,B) :- conflitto(B,A).
 
 inMenu(P,S,B) | outMenu(P,S,B):- primo(P), secondo(S), bevanda(B).
+:- #count{P,S,B : inMenu(P,S,B)} != 1.
 :- inMenu(A,B,C), conflitto(A,B).
 :- inMenu(A,B,C), conflitto(B,C).
 :- inMenu(A,B,C), conflitto(A,C).
