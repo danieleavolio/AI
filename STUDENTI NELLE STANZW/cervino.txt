@@ -1,0 +1,51 @@
+A1: {​​alpi(2), alpi(3), cervino(1,2), cervino(3,2), alpi(1), bianco(2), rosa(3), cervino(3,1), bianco(1)}​​
+A2: {​​alpi(2), alpi(3), cervino(1,2), cervino(3,2), rosa(2), rosa(3)}​​
+A3: {​​alpi(2), alpi(3), cervino(1,2), cervino(3,2), alpi(1), bianco(2), bianco(3), bianco(1)}​​
+A4: {​​alpi(2), alpi(3), cervino(1,2), cervino(3,2), alpi(1), bianco(2), rosa(3), cervino(3,1), rosa(1)}​​
+
+:~ cervino(X,Y), #count{​​Z:alpi(Z)}​​=Y.[X@Y, X,Y]
+:~ alpi(X), alpi(Y), X>Y, not cervino(X,Y). [X@1, X,Y]
+
+
+N.B se un cervino X,Y non lo hai, allora non considerare proprio quel weak
+
+A1:
+	:~ cervino(3,1), numeroAlpi = 3 che è diverso da 1., quindi non paghiamo niente.
+	:~ cervino(1,2), mumeroAlpi = 3 che è diverso da 2., quidni non paghiamo niente.
+	:~ cervino(3,2), numeroAlpi = 3 che è diverso da 2, quidni non paghiamo niente.
+
+	:~ alpi(2), alpi(1), 2>1 not cervino(2,1) [2@1, 2,1]
+	:~ alpi(3), alpi(2), 3>2 not cervino(3,2) free
+	:~ alpi(3), alpi(1), 3>1 not cervino(3,1) free
+	
+
+A2: 
+	:~ cervino(1,2), numeroAlpi = 2 che è uguale a 2 -> [1@2, 1,2]
+	:~ cervino(3,2), numeroAlpi = 2 che è uguale a 2 -> [3@2, 3,2]
+
+	gli altri, non sono violati
+
+A3: 
+	:~ cervino(1,2), numeroAlpi = 3, diverso da 2 quindi non paghiamo
+	:~ cervino(3,2), numeroAlpi = 3, diverso da 2 quindi non paghiamo
+
+	:~ alpi(3), alpi(2), 3>2 not cervino(3,2) free
+	:~ alpi(2), alpi(1), 2>1 not cervino(2,1) [2@1, 2,1]
+	:~ alpi(3), alpi(1), 3>1 not cervino(3,1) [3@1, 3,1]
+
+A4: 
+	:~ cervino(3,2), numeroAlpi = 3, non pago
+	:~ cervino(3,1), numeroAlpi = 3, non pago
+	:~ cervino(1,2), numeroAlpi = 3, non pago
+
+	:~ alpi(3), alpi(2), 3>2 not cervino(3,2), free
+	:~ alpi(2), alpi(1), 2>1 not cervino(2,1) [2@1, 2,1]
+	:~ alpi(3), alpi(1), 3>1 not cervino(3,1), free
+
+costi totali
+A1 = [2@1] BEST
+A2 = [4@2] sicuramente no
+A3 = [5@1] sicuramente no
+A4 = [2@1] BEST
+
+
