@@ -1,0 +1,74 @@
+%Esercizio 1. L’anno prossimo si terranno le elezioni per la carica di sindaco nella ridente cittadina di
+%Pasticci Terme, e il primo cittadino in carica ci tiene ad essere rieletto. Pertanto, intende cogliere l’occasione
+%della prossima festa del santo patrono per accattivarsi le simpatie dei concittadini. Ha quindi nominato un
+%comitato con lo scopo di organizzare la più bella festa del circondario, stanziando la maggior quantità
+%possibile di fondi. Si aiuti il comitato organizzatore a decidere come spendere al meglio questi fondi,
+%tenendo in considerazione tutte le richieste del sindaco e i gusti della cittadinanza.
+%-La festa si sviluppa in 3 serate. Per ciascuna serata deve essere prevista almeno una attrazione per
+%ciascuna delle seguenti categorie: spettacolo, gioco, religione.
+
+
+
+
+
+%spettacolo, gioco, religione.
+%budget(X)  l’ammontare del budget
+%serata(1..3).  le tre serate da organizzare
+%attrazione(ID,Tipo,Durata,Costo)  l’insieme delle attrazioni disponibili
+
+budget(60).
+sera(1..3).
+attrazione(processione,religione,2,5).
+attrazione(veglia,religione,1,2).
+attrazione(musicaSacra,religione,3,6).
+attrazione(spiritual,religione,2,15).
+attrazione(riffa,gioco,1,10).
+attrazione(bingo,gioco,3,5).
+attrazione(alberoCuccagna,gioco,1,3).
+attrazione(corsaCavalli,gioco,3,30).
+attrazione(concerto1,spettacolo,2,5).
+attrazione(concerto2,spettacolo,1,10).
+attrazione(concerto3,spettacolo,3,25).
+attrazione(cabaret1,spettacolo,2,20).
+
+%-È chiaro che una stessa attrazione non dovrà essere ripresentata in due serate diverse, pena una
+%	brutta figura.
+
+
+durataSerata(S,X) :- #sum{D,ID: seraAttrazione(S,ID), attrazione(ID,_,D,_)} = X, sera(S).
+costoSerata(S,X) :- #sum{C,ID: seraAttrazione(S,ID), attrazione(ID,_,_,C)} = X, sera(S).
+seraAttrazione(S,A) | nonSeraAttrazione(S,A) :- sera(S), attrazione(A,B,C,D).
+
+
+
+:- seraAttrazione(S,A), seraAttrazione(S1,A), S!=S1.
+
+
+
+%- Ogni serata deve durare almeno 5 e non più di 7 ore.
+
+%DATA UNA SERATA S, LA SOMMA DELLE ATTRAZIONI IN QUELLA SERATA DEVONO SESSERE MAGGIORI DI 5
+%METTENDO SERAATTRAZIONE FUORI STIAMO PRENDENDO LE ATTRAZIONOI DI QUELLE sera
+%
+:- sera(S),  #sum{D,ID: attrazione(ID,_,D,_), seraAttrazione(S,ID)} < 5.
+:- sera(S),  #sum{D,ID: attrazione(ID,_,D,_), seraAttrazione(S,ID)} > 7.
+
+%- Il budget è stabilito dal sindaco e non può essere superato.
+:- budget(B), #sum{C, ID: attrazione(ID,_,_,C),seraAttrazione(S,ID)} >= B.
+
+%- I giovani figli dei gentili elettori preferiscono decisamente le attrattive di carattere giocoso: sarebbe
+%pertanto preferibile massimizzare il loro numero nei 3 giorni. 
+%Tuttavia, essendo la festa del santo patrono il parroco insiste perché il numero di attrattive di carattere religioso sia superiore 
+%a quello di tutte le altre nei 3 giorni. Il peso politico del parroco è superiore a quello dei ragazzini, pertanto
+%la cosa più importante è accontentare lui
+%optimize
+
+%NON VORREI LASCIARE FUORI UN ATTRAZIONE DI TIPO X PAGANDO TOT
+% NON VOGLIO LASCIARE FUORI LE ATTRAZIONI CHE MI INTERESSANO DI PIU
+:~ sera(S), nonSeraAttrazione(S,A), attrazione(A,gioco,_,_). [1@1,S,A]
+:~ sera(S), nonSeraAttrazione(S,A), attrazione(A,religione,_,_). [1@2,S,A]
+
+
+
+
+
